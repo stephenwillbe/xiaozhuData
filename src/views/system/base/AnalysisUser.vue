@@ -56,26 +56,7 @@
            <div slot="header" class="clearfix">
                <span>图表</span>
            </div>
-           <el-row :gutter="20">
-               <el-col :span="12">
-                   <el-button-group>
-                       <el-button size="mini" type="primary" >新增设备</el-button>
-                       <el-button size="mini" type="primary" >新增账号</el-button>
-                       <el-button size="mini" type="primary" >活跃设备</el-button>
-                       <el-button size="mini" type="primary" >活跃账号</el-button>
-                       <el-button size="mini" type="primary" >老用户活跃</el-button>
-                   </el-button-group>
-               </el-col>
-
-
-               <el-col :span="6" style="float: right">
-                   <el-button-group>
-                       <el-button size="mini" type="success" >日</el-button>
-                       <el-button size="mini" type="success" >周</el-button>
-                       <el-button size="mini" type="success" >月</el-button>
-                   </el-button-group>
-               </el-col>
-           </el-row>
+          <user-charts></user-charts>
        </el-card >
         <el-card class="box-card" style="margin-top: 10px">
             <div slot="header" class="clearfix">
@@ -132,9 +113,10 @@
 
 <script>
     import {listMenu} from "../../../api/menu"
-
+    import UserCharts from "../../../components/echarts/UserCharts";
     export default {
         name: "AnaylsisUser",
+        components: {UserCharts},
         data() {
             return {
                 input: '',
