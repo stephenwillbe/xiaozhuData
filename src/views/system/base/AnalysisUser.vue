@@ -66,33 +66,33 @@
                     :data="tableData"
                     style="width: 100%">
                 <el-table-column
-                        prop="menuName"
+                        prop="dateDay"
                         label="日期"
                         width="180">
                 </el-table-column>
                 <el-table-column
-                        prop="url"
-                        label="新增活跃"
+                        prop="newRegister"
+                        label="新增注册"
                         >
                 </el-table-column>
                 <el-table-column
-                        prop="glyphicon"
-                        label="新增注册">
+                        prop="newEquipment"
+                        label="新增设备">
                 </el-table-column>
                 <el-table-column
-                        prop="glyphicon"
+                        prop="registerConversion"
                         label="注册转化率">
                 </el-table-column>
                 <el-table-column
-                        prop="glyphicon"
+                        prop="activeEquipment"
                         label="活跃设备">
                 </el-table-column>
                 <el-table-column
-                        prop="glyphicon"
+                        prop="activeUser"
                         label="活跃账号">
                 </el-table-column>
                 <el-table-column
-                        prop="glyphicon"
+                        prop="activePayUser"
                         label="老用户活跃（设备）"
                         width="180">
                 </el-table-column>
@@ -101,11 +101,12 @@
 
 
         <div class="block">
-            <el-pagination
-                    layout="prev, pager, next"
-                    :total="total"
-                    :page-size="6"
-                    @current-change="page">
+            <el-pagination layout="prev, pager, next, sizes, total, jumper"
+                           :page-sizes="[5, 10,100]"
+                           :page-size="pageSize"
+                           :total="tableData.length"
+                           @current-change="handleCurrentChange"
+                           @size-change="handleSizeChange">
             </el-pagination>
         </div>
     </el-card>
@@ -113,6 +114,7 @@
 
 <script>
     import {listMenu} from "../../../api/menu"
+    import {listUserAnalysis} from "../../../api/system/base";
     import UserCharts from "../../../components/echarts/UserCharts";
     export default {
         name: "AnaylsisUser",
@@ -122,6 +124,8 @@
                 input: '',
                 total: null,
                 tableData: null,
+                pageSize: 10,
+                currentPage: 1 ,
                 pickerOptions: {
                     shortcuts: [{
                         text: '最近一周',
@@ -155,16 +159,17 @@
         },
         methods: {
             initTable() {
-                listMenu(1, 6).then(response => {
-                    this.total = response.data.total
-                    this.tableData = response.data.records
+                listUserAnalysis(1,10).then(response => {
+                    console.log(response)
+                    // this.total = response.data.total
+                    this.tableData = response.data
                 })
             },
-            page(currentPage) {
-                listMenu(currentPage, 6).then(response => {
-                    this.total = response.data.total
-                    this.tableData = response.data.records
-                })
+            handleCurrentChange:function(cpage){
+                this.$data.currentPage = cpage;
+            },
+            handleSizeChange:function(psize){
+                this.$data.pageSize = psize;
             }
         },
         created() {
